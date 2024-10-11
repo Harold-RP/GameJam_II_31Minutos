@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//HOLA QUE TAL
+
 public class Player : MonoBehaviour
 {
 
