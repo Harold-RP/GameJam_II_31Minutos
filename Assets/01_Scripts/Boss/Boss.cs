@@ -1,21 +1,30 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Boss : MonoBehaviour
 {
+    [Header("---------------------- Stats ------------------------")]
     public float chargeSpeed = 5f;        // Velocidad de embestida
     public float jumpForce = 10f;         // Fuerza del salto
     public float wallBounceSpeed = 3f;    // Velocidad al rebotar contra la pared
     public float attackCooldown = 2f;     // Tiempo de descanso entre ataques
-    public float minChargeDistance = 5f;  // Distancia mínima para embestir
-    public float maxJumpDistance = 8f;    // Distancia máxima para saltar
-
-    private Transform player;
-    private Rigidbody2D rb;
+    public float minChargeDistance = 5f;  // Distancia mï¿½nima para embestir
+    public float maxJumpDistance = 8f;    // Distancia mï¿½xima para saltar
+    private bool isGrounded = false;      // Controla si estï¿½ en el suelo
+    private bool canAttack = true;        // Controla si puede atacar
     private bool isCharging = false;
     private bool canJump = true;
-    private bool isGrounded = false;      // Controla si está en el suelo
-    private bool canAttack = true;        // Controla si puede atacar
+
+    public float laserDuration = 0.5f;
+    public int bossPhase = 1;
+    bool isAttacking = false;
+
+    [Header("---------------------- References ------------------------")]
+    public GameObject laserPrefab;
+    public Transform firePoint;
+    private Transform player;
+    private Rigidbody2D rb;
 
     void Start()
     {
@@ -33,14 +42,33 @@ public class Boss : MonoBehaviour
     void Update()
     {
         if (player == null) return; // Si no hay jugador, no hacer nada
-
-        if (canAttack)
+        if (canAttack && !isAttacking)
         {
-            StartCoroutine(DecideAndPerformAttack());
+            switch (bossPhase)
+            {
+                case 1:
+                    StartCoroutine(DecideAndPerformAttack());
+                    break;
+                case 2:
+                    Mirror();
+                    AimAtPlayer();
+                    StartCoroutine(LaserAttack());
+                    break;
+                //case 3:
+
+                //    break;
+                //case 4:
+
+                //    break;
+                //case 5:
+            
+                //    break;
+            }
+
         }
     }
 
-    // Lógica para decidir y ejecutar un ataque
+    // Lï¿½gica para decidir y ejecutar un ataque
     IEnumerator DecideAndPerformAttack()
     {
         canAttack = false;
@@ -48,47 +76,47 @@ public class Boss : MonoBehaviour
         // Calcular la distancia al jugador
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        // Condición para elegir embestida o salto
+        // Condiciï¿½n para elegir embestida o salto
         if (distanceToPlayer < minChargeDistance)
         {
-            Debug.Log("El jefe está cerca, preparando embestida.");
-            ChargeAtPlayer();  // Priorizar embestida si está muy cerca
+            Debug.Log("El jefe estï¿½ cerca, preparando embestida.");
+            ChargeAtPlayer();  // Priorizar embestida si estï¿½ muy cerca
         }
         else if (distanceToPlayer < maxJumpDistance && canJump)
         {
-            Debug.Log("El jefe está a una distancia adecuada, preparando salto.");
-            StartCoroutine(JumpTowardsPlayer());  // Priorizar salto si está a una distancia media
+            Debug.Log("El jefe estï¿½ a una distancia adecuada, preparando salto.");
+            StartCoroutine(JumpTowardsPlayer());  // Priorizar salto si estï¿½ a una distancia media
         }
         else
         {
-            Debug.Log("El jefe está lejos, decidiendo embestida.");
-            ChargeAtPlayer();  // Si está lejos, intentar embestir
+            Debug.Log("El jefe estï¿½ lejos, decidiendo embestida.");
+            ChargeAtPlayer();  // Si estï¿½ lejos, intentar embestir
         }
 
         // Esperar antes de realizar otro ataque
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
-        Debug.Log("El jefe está listo para otro ataque.");
+        Debug.Log("El jefe estï¿½ listo para otro ataque.");
     }
 
-    // Método para embestir al jugador
+    // Mï¿½todo para embestir al jugador
     void ChargeAtPlayer()
     {
         isCharging = true;
 
-        // Calcular la dirección hacia el jugador
+        // Calcular la direcciï¿½n hacia el jugador
         Vector2 direction = (player.position - transform.position).normalized;
 
-        // Aplicar velocidad directamente en la dirección del jugador
+        // Aplicar velocidad directamente en la direcciï¿½n del jugador
         rb.velocity = new Vector2(direction.x * chargeSpeed, rb.velocity.y);
 
-        Debug.Log("El jefe está embistiendo al jugador en la dirección: " + direction);
+        Debug.Log("El jefe estï¿½ embistiendo al jugador en la direcciï¿½n: " + direction);
     }
 
-    // Método para saltar hacia el jugador
+    // Mï¿½todo para saltar hacia el jugador
     IEnumerator JumpTowardsPlayer()
     {
-        if (isGrounded)  // Solo saltar si está en el suelo
+        if (isGrounded)  // Solo saltar si estï¿½ en el suelo
         {
             canJump = false;
             yield return new WaitForSeconds(attackCooldown);
@@ -96,32 +124,72 @@ public class Boss : MonoBehaviour
             Vector2 jumpDirection = (player.position - transform.position).normalized;
             rb.velocity = new Vector2(jumpDirection.x * jumpForce, jumpForce);
 
-            Debug.Log("El jefe ha saltado hacia el jugador en la dirección: " + jumpDirection);
+            Debug.Log("El jefe ha saltado hacia el jugador en la direcciï¿½n: " + jumpDirection);
             canJump = true;
         }
         else
         {
-            Debug.Log("El jefe intentó saltar, pero no está en el suelo.");
+            Debug.Log("El jefe intentï¿½ saltar, pero no estï¿½ en el suelo.");
         }
     }
 
-    // Método para detectar la colisión con las paredes
+    void Mirror()
+    {
+        if (player.position.x < transform.position.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    void AimAtPlayer()
+    {
+        Vector2 dir = player.position - transform.position;
+        float angleZ = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+        firePoint.rotation = Quaternion.Euler(0, 0, -angleZ);
+    }
+
+    IEnumerator LaserAttack()
+    {
+        isAttacking = true;
+        canAttack = false;
+        float attackTimer = 0f;
+        float laserInterval = 0.03f; // Intervalo entre disparos de lÃ¡ser
+
+        while (attackTimer < laserDuration)
+        {
+            Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
+            yield return new WaitForSeconds(laserInterval);
+            attackTimer += laserInterval;
+        }
+
+        // Esperar antes de poder realizar otro ataque
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+        isAttacking = false;
+        Debug.Log("El jefe estÃ¡ listo para otro ataque.");
+    }
+
+    // Mï¿½todo para detectar la colisiï¿½n con las paredes
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
-            // Rebota hacia atrás al chocar con una pared
+            // Rebota hacia atrï¿½s al chocar con una pared
             rb.velocity = new Vector2(-rb.velocity.x * wallBounceSpeed, rb.velocity.y);
             isCharging = false;
 
-            Debug.Log("El jefe chocó contra una pared y rebotó.");
+            Debug.Log("El jefe chocï¿½ contra una pared y rebotï¿½.");
         }
 
         // Detectar si toca el suelo
         if (collision.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
-            Debug.Log("El jefe está tocando el suelo.");
+            Debug.Log("El jefe estï¿½ tocando el suelo.");
         }
     }
 
