@@ -20,6 +20,9 @@ public class Boss : MonoBehaviour
     public int bossPhase = 1;
     bool isAttacking = false;
 
+    public float maxHealth = 200f; 
+    private float currentHealth;
+
     [Header("---------------------- References ------------------------")]
     public GameObject laserPrefab;
     public Transform firePoint;
@@ -172,6 +175,24 @@ public class Boss : MonoBehaviour
         isAttacking = false;
         Debug.Log("El jefe está listo para otro ataque.");
     }
+
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("El jefe ha sido derrotado.");
+       //GameObject.Destroy(gameObject);
+    }
+
 
     // M�todo para detectar la colisi�n con las paredes
     private void OnCollisionEnter2D(Collision2D collision)
