@@ -6,9 +6,8 @@ using UnityEngine.UI;
 
 public class CreditsManager : MonoBehaviour
 {
-    public float creditsDuration = 100f;
+    public float creditsDuration = 50f;
     public TextMeshProUGUI gameTitle;
-    public TextMeshProUGUI endOfPrologue;
     public RectTransform allCredits;
     public RectTransform returnToMenuButton;
 
@@ -18,27 +17,17 @@ public class CreditsManager : MonoBehaviour
         AudioManager.instance.PlayInstrumentalAndVocals("", "");
         AudioManager.instance.InstrumentalVolumeUp(1f);
         AudioManager.instance.VocalsVolumeUp(1f);
-        LeanTween.value(gameObject, 0f, 255f, 1f)
+        LeanTween.value(gameObject, 0f, 255f, 2f)
                         .setOnUpdate((float value) => {
                             Color color = gameTitle.color;
                             color.a = value / 255f;
                             gameTitle.color = color;
-                        }).setDelay(1f).setOnComplete(ShowEndOfPrologue);
-    }
-
-    void ShowEndOfPrologue()
-    {
-        LeanTween.value(gameObject, 0f, 255f, 1f)
-                        .setOnUpdate((float value) => {
-                            Color color = endOfPrologue.color;
-                            color.a = value / 255f;
-                            endOfPrologue.color = color;
-                        }).setDelay(3f).setOnComplete(ShowCredits);
+                        }).setDelay(1f).setOnComplete(ShowCredits);
     }
 
     void ShowCredits()
     {
-        LeanTween.moveY(allCredits, 777, creditsDuration).setDelay(3f).setOnComplete(ShowReturnToMenu);
+        LeanTween.moveY(allCredits, 1860, creditsDuration).setDelay(2f).setOnComplete(ShowReturnToMenu);
     }
 
     void ShowReturnToMenu()
