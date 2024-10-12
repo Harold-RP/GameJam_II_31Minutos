@@ -110,6 +110,7 @@ MonoBehaviour:
   bossPhase: 2
   maxHealth: 200
   laserPrefab: {fileID: 2429907366507637052, guid: 58d097a2df8cfc146afc965da6d7a6c8, type: 3}
+  headPrefab: {fileID: 5486126084938741415, guid: 65f8f5ff677902f4991e76a88bbf4548, type: 3}
   firePoint: {fileID: 1114580844644210892}
 --- !u!50 &553956796959475821
 Rigidbody2D:

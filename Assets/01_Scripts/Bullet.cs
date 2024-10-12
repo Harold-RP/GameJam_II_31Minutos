@@ -58,6 +58,17 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // Si el proyectil choca con la cabeza del jefe
+        if (collision.gameObject.CompareTag("BossHead"))
+        {
+            BossHead bossHead = collision.gameObject.GetComponent<BossHead>();
+            if (bossHead != null)
+            {
+                bossHead.TakeDamage(damage);
+            }
+            Destroy(gameObject);
+        }
+
         // Si el proyectil choca con cualquier otro objeto (como una pared), también se destruye
         if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Floor"))
         {
