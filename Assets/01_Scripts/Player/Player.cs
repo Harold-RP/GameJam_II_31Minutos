@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 //HOLA QUE TAL
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     public float lowJumpMultiplier = 3f;     // Para saltos cortos
 
     public Animator animator;
+    public TextMeshProUGUI powerUpMessage;
 
     void Start()
     {
@@ -218,6 +220,45 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Jugador ha muerto.");
         // Aquí podrías implementar la lógica de muerte (reiniciar el nivel, mostrar pantalla de derrota, etc.)
+    }
+
+    public void UsePowerUp(PowerUp powerUp)
+    {
+        switch (powerUp.type)
+        {
+            case PowerUpType.Life:
+                if (Random.Range(0, 2) == 0)
+                {
+                    currentHealth -= powerUp.value;
+                    StartCoroutine(showMessage("-Vida-"));
+                }
+                else
+                {
+                    currentHealth += powerUp.value;
+                    StartCoroutine(showMessage("+Vida+"));
+                }
+                break;
+
+            case PowerUpType.Speed:
+                if(Random.Range(0, 2) == 0)
+                {
+                    moveSpeed -= powerUp.value;
+                    StartCoroutine(showMessage("-Velocidad-"));
+                }
+                else
+                {
+                    moveSpeed += powerUp.value;
+                    StartCoroutine(showMessage("+Velocidad+"));
+                }
+                break;
+        }
+    }
+
+    IEnumerator showMessage(string text)
+    {
+        powerUpMessage.text = text;
+        yield return new WaitForSeconds(3f);
+        powerUpMessage.text = "";
     }
 
     private void OnDrawGizmosSelected()
