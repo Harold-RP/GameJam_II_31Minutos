@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     public float fallMultiplier = 4.0f;      // Para caída rápida
     public float lowJumpMultiplier = 3f;     // Para saltos cortos
 
+    public Animator animator;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -65,17 +67,28 @@ public class Player : MonoBehaviour
     void Move()
     {
         float moveInput = Input.GetAxis("Horizontal");
+
+        // Control del movimiento horizontal del jugador
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
 
+        // Si el jugador se está moviendo a la izquierda
         if (moveInput < 0)
         {
-            firePoint.localPosition = new Vector3(-1f, 0f, 0f);
+            // Voltea el jugador hacia la izquierda
+            transform.localScale = new Vector3(-1f, 1f, 1f);
         }
+        // Si el jugador se está moviendo a la derecha
         else if (moveInput > 0)
         {
-            firePoint.localPosition = new Vector3(1f, 0f, 0f);
+            // Voltea el jugador hacia la derecha
+            transform.localScale = new Vector3(1f, 1f, 1f);
         }
+
+        // Control de la animación (usamos el valor absoluto de moveInput)
+        animator.SetFloat("mov", Mathf.Abs(moveInput));
     }
+
+
 
     void Jump()
 {
@@ -130,16 +143,21 @@ public class Player : MonoBehaviour
 
     void HandleRangedAttack()
     {
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L)) // Suponiendo que la tecla L es para disparar
         {
+            // Instanciar el proyectil en la posición del firePoint
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
-            Vector2 direction = firePoint.localPosition.x > 0 ? Vector2.right : Vector2.left;
+
+            // Obtener la dirección de disparo según la escala del jugador
+            Vector2 direction = transform.localScale.x > 0 ? Vector2.right : Vector2.left;
+
+            // Aplicar velocidad al proyectil
             Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();
             projectileRb.velocity = direction * projectileSpeed;
+
             Debug.Log("Disparaste un proyectil hacia " + direction);
         }
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
