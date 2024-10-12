@@ -5,21 +5,24 @@ using UnityEngine.Events;
 
 public class BossHead : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    public UnityEvent<GameObject> onShoot;
+    [Header("---------------------- Stats ------------------------")]
+    public float life = 50f;
     public float timer = 0f;
     public float timeBtwShoot = 5f;
     public float speed = 5f;
+    public float upLimit = 7f;
+    public float TimeBtwDirection = 3f;
+    float directionTimer = 0f;
+    bool isGoingLeft = false;
+    bool isMovingVertical = false;
+    bool isGoingDown = true;
+    [Header("---------------------- References ------------------------")]
+    public GameObject bulletPrefab;
     public Transform firePoints;
     public Transform leftLimit;
     public Transform rightLimit;
     public Transform downLimit;
-    public float upLimit = 7f;
-    bool isGoingLeft = false;
-    bool isMovingVertical = false;
-    bool isGoingDown = true;
-    public float TimeBtwDirection = 3f;
-    float directionTimer = 0f;
+    public UnityEvent<GameObject> onShoot;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +69,7 @@ public class BossHead : MonoBehaviour
     {
         if (isGoingDown)// Bajar
         {
-            if (downLimit.position.y + 1 < transform.position.y)
+            if (downLimit.position.y < transform.position.y)
                 transform.Translate(Vector2.down * speed * Time.deltaTime);
             else
                 isGoingDown = false;
@@ -98,6 +101,16 @@ public class BossHead : MonoBehaviour
                 transform.Translate(Vector2.right * speed * Time.deltaTime);
             else
                 isGoingLeft = true;
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        life -= damage;
+
+        if (life <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 8793215813096464827}
   m_Layer: 0
   m_Name: BossHead
-  m_TagString: Untagged
+  m_TagString: BossHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,16 +179,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 275dbadbd715e804c83b1b7960c61b99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  life: 50
   bulletPrefab: {fileID: 448776961736535390, guid: 0b9374dc3a9fc0747b9ed4e4e131f483, type: 3}
   onShoot:
     m_PersistentCalls:
       m_Calls: []
   timer: 0
   timeBtwShoot: 2
-  rotationSpeed: 20
+  speed: 5
   firePoints: {fileID: 3212810065334583668}
   leftLimit: {fileID: 0}
   rightLimit: {fileID: 0}
+  downLimit: {fileID: 0}
+  upLimit: 7
+  TimeBtwDirection: 3
 --- !u!212 &7101740574032228051
 SpriteRenderer:
   m_ObjectHideFlags: 0

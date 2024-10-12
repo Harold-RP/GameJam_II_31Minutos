@@ -22,16 +22,21 @@ public class Boss : MonoBehaviour
 
     public float maxHealth = 200f; 
     private float currentHealth;
+    bool isHeadSpawned = false;
 
     [Header("---------------------- References ------------------------")]
     public GameObject laserPrefab;
+    public GameObject headPrefab;
     public Transform firePoint;
     private Transform player;
     private Rigidbody2D rb;
+    CapsuleCollider2D collider;
+    GameObject bossHeadGO;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        collider = GetComponent<CapsuleCollider2D>();
 
         // Detectar al jugador usando su tag
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -57,9 +62,9 @@ public class Boss : MonoBehaviour
                     AimAtPlayer();
                     StartCoroutine(LaserAttack());
                     break;
-                //case 3:
-
-                //    break;
+                case 3:
+                    SpawnHead();
+                    break;
                 //case 4:
 
                 //    break;
@@ -176,6 +181,30 @@ public class Boss : MonoBehaviour
         Debug.Log("El jefe está listo para otro ataque.");
     }
 
+
+    void SpawnHead()
+    {
+        if (!isHeadSpawned)//Spawn
+        {
+            isHeadSpawned = true;
+            collider.enabled = false;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+            bossHeadGO = Instantiate(headPrefab, transform.position, transform.rotation);
+
+        }
+        else//Idle and check if its dead
+        {
+            //animacion de idle
+            BossHead bossHead = bossHeadGO.GetComponent<BossHead>();
+            if (bossHead == null)//murió la cabeza
+            {
+                isHeadSpawned = false;
+                rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+                collider.enabled = true;
+                bossPhase = 1;//Pasar a la siguiente fase
+            }
+        }
+    }
 
     public void TakeDamage(float damage)
     {

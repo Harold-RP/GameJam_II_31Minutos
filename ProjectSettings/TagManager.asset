@@ -10,6 +10,9 @@ TagManager:
   - LeftSpawner
   - RightSpawner
   - Spawner
+  - BossHead
+  - ScreenCoverBullet
+  - PlayerBullet
   layers:
   - Default
   - TransparentFX
