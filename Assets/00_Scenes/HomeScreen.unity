@@ -207,10 +207,6 @@ RectTransform:
 --- !u!114 &313664502
 MonoBehaviour:
   m_ObjectHideFlags: 0
-<<<<<<< Updated upstream
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-=======
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
@@ -325,7 +321,6 @@ MonoBehaviour:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 674170298976420890, guid: 969ef439e77b1ce419b83b98318b4202, type: 3}
   m_PrefabInstance: {fileID: 556680015}
->>>>>>> Stashed changes
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 313664500}
   m_Enabled: 1
@@ -790,11 +785,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050722408}
   m_Enabled: 1
-<<<<<<< Updated upstream
-  m_VideoClip: {fileID: 32900000, guid: 057dc9676defa6a4293114e9de4064d8, type: 3}
-=======
   m_VideoClip: {fileID: 32900000, guid: 9c92a7bf79e1ad1449638a03e7053f8d, type: 3}
->>>>>>> Stashed changes
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -835,8 +826,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!114 &1050722411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -851,7 +840,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 1050722409}
   delayInSeconds: 7
->>>>>>> Stashed changes
 --- !u!1 &1234559482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,13 +1587,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-<<<<<<< Updated upstream
-  m_AnchoredPosition: {x: -2786, y: 68}
-  m_SizeDelta: {x: 1891.982, y: 937.4888}
-=======
   m_AnchoredPosition: {x: -64.0002, y: 22.728043}
   m_SizeDelta: {x: 844.519, y: 1164.439}
->>>>>>> Stashed changes
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
