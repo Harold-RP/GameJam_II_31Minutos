@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 5f);  // Ajusta el valor para la rapidez de caída
 
+            animator.SetTrigger("fall");
+
         }
 
         // Debug para ver la vida
