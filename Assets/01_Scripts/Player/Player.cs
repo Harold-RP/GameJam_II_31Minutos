@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float moveSpeed = 10f;
+    public float jumpForce = 15f;
     public float meleeAttackRange = 1f;
     public float meleeAttackDamage = 10f;
     public GameObject projectilePrefab;
@@ -20,10 +19,18 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
 
+    public float jumpTimeMax = 0.3f;  // Tiempo máximo que puede durar el salto al mantener la tecla
+    private float jumpTimeCounter;    // Contador de tiempo de salto
+    private bool isJumping;
+
+    public float fallMultiplier = 4.0f;      // Para caída rápida
+    public float lowJumpMultiplier = 3f;     // Para saltos cortos
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;  // Inicializar la vida actual
+        rb.gravityScale = 2.5f;     // Escala de gravedad normal
     }
 
     void Update()
@@ -32,6 +39,23 @@ public class Player : MonoBehaviour
         Jump();
         HandleMeleeAttack();
         HandleRangedAttack();
+
+        // Aplicar mayor gravedad durante la caída
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            // Aplicar gravedad extra cuando se suelta la tecla de salto
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 5f);  // Ajusta el valor para la rapidez de caída
+
+        }
 
         // Debug para ver la vida
         Debug.Log("Player Health: " + currentHealth);
@@ -54,12 +78,36 @@ public class Player : MonoBehaviour
     }
 
     void Jump()
+{
+    if (Input.GetKeyDown(KeyCode.W) && isGrounded)  // Cambié a KeyCode.W
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
+        isJumping = true;
+        jumpTimeCounter = jumpTimeMax;
+        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
     }
+
+    // Si se sigue presionando el botón de salto y aún no ha llegado al tiempo máximo
+    if (Input.GetKey(KeyCode.W) && isJumping)  // Cambié a KeyCode.W
+    {
+            if (jumpTimeCounter > 0)
+            {
+                // Disminuir la fuerza de salto al mantener presionada la tecla
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.7f); // Ajusta 0.5f a un valor que sientas correcto
+                jumpTimeCounter -= Time.deltaTime;  // Restar tiempo mientras se presiona el botón
+            }
+            else
+            {
+                isJumping = false;
+            }
+        }
+
+    // Si el jugador suelta el botón de salto, se interrumpe el salto
+    if (Input.GetKeyUp(KeyCode.W))  // Cambié a KeyCode.W
+    {
+        isJumping = false;
+    }
+}
+
 
     // Método para manejar el ataque cuerpo a cuerpo
     void HandleMeleeAttack()
@@ -73,7 +121,6 @@ public class Player : MonoBehaviour
                 if (enemy.CompareTag("Boss"))
                 {
                     Debug.Log("Golpeaste a " + enemy.name);
-
                     // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
                     enemy.GetComponent<Boss>().TakeDamage(meleeAttackDamage);
                 }
@@ -135,5 +182,4 @@ public class Player : MonoBehaviour
             Gizmos.DrawWireSphere(firePoint.position, meleeAttackRange);
         }
     }
-
 }

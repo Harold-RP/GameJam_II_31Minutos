@@ -723,8 +723,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -732,9 +732,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1680511700
 MonoBehaviour:
@@ -748,14 +748,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52971df48a81d14897ad5632367098c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 10
+  moveSpeed: 10
+  jumpForce: 20
   meleeAttackRange: 1
-  meleeAttackDamage: 10
+  meleeAttackDamage: 5
   projectilePrefab: {fileID: 940244886356539730, guid: 22c930622e3a8b84f9d1c2d2bc2504ae, type: 3}
   projectileSpeed: 10
   firePoint: {fileID: 1290279795}
   maxHealth: 100
+  jumpTimeMax: 0.3
+  fallMultiplier: 4
+  lowJumpMultiplier: 3
 --- !u!70 &1680511701
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
