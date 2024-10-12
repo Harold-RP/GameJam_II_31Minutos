@@ -37,12 +37,12 @@ public class AnimationsUI : MonoBehaviour
 
         yield return StartCoroutine(FadeCanvasGroup(logoCanvasGroup, 0f, 1f, 3f));
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
 
 
-        yield return StartCoroutine(FadeCanvasGroup(logoCanvasGroup, 1f, 0f, 1.5f));
+        yield return StartCoroutine(FadeCanvasGroup(logoCanvasGroup, 1f, 0f, 1f));
 
-        yield return StartCoroutine(FadeCanvasGroup(inicioGrupoCanvasGroup, 1f, 0f, 1.5f));
+        yield return StartCoroutine(FadeCanvasGroup(inicioGrupoCanvasGroup, 1f, 0f, 1f));
     }
 
     private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
