@@ -735,8 +735,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 886585516}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
-=======
 --- !u!1 &1064334351
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,7 +834,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1680511698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> 7b3c30fcfebe444bfd4dd0ea6b1dd59d6b33e139
 --- !u!1 &1353675966
 GameObject:
   m_ObjectHideFlags: 0
@@ -910,7 +907,7 @@ GameObject:
   - component: {fileID: 1680511698}
   - component: {fileID: 1680511697}
   - component: {fileID: 1680511700}
-  - component: {fileID: 1680511702}
+  - component: {fileID: 1680511703}
   - component: {fileID: 1680511699}
   - component: {fileID: 1680511701}
   - component: {fileID: 1680511702}
@@ -1076,21 +1073,15 @@ CapsuleCollider2D:
   m_Offset: {x: -0.08063642, y: -0.021017095}
   m_Size: {x: 1.7705292, y: 3.392263}
   m_Direction: 0
-<<<<<<< HEAD
 --- !u!95 &1680511702
 Animator:
   serializedVersion: 5
-=======
---- !u!114 &1680511702
-MonoBehaviour:
->>>>>>> 7b3c30fcfebe444bfd4dd0ea6b1dd59d6b33e139
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680511696}
   m_Enabled: 1
-<<<<<<< HEAD
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: db1010488eb80974682d1ffd635020af, type: 2}
   m_CullingMode: 0
@@ -1103,14 +1094,20 @@ MonoBehaviour:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
-=======
+--- !u!114 &1680511703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680511696}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2733c73b59ae63547ac9f22afef4b0c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   coverImg: {fileID: 394330184}
   timePerCover: 3
->>>>>>> 7b3c30fcfebe444bfd4dd0ea6b1dd59d6b33e139
 --- !u!1 &1750897244
 GameObject:
   m_ObjectHideFlags: 0
