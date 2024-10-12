@@ -4,20 +4,56 @@ using UnityEngine;
 
 public class AnimationsUI : MonoBehaviour
 {
-    [SerializeField] private GameObject logo;
-    [SerializeField] private GameObject inicioGrupo;
+    [SerializeField] private GameObject logo;         
+    [SerializeField] private GameObject inicioGrupo; 
+
+    private CanvasGroup logoCanvasGroup;
+    private CanvasGroup inicioGrupoCanvasGroup;
 
     private void Start()
     {
-        LeanTween.moveX(logo.GetComponent<RectTransform>(), 0, 1.5f).setDelay(2.5f)
-        .setEase(LeanTweenType.easeOutBounce).setOnComplete(BajarAlpha);
+     
+        logoCanvasGroup = logo.GetComponent<CanvasGroup>();
+        if (logoCanvasGroup == null)
+        {
+            logoCanvasGroup = logo.AddComponent<CanvasGroup>();
+        }
+        logoCanvasGroup.alpha = 0; 
+
+      
+        inicioGrupoCanvasGroup = inicioGrupo.GetComponent<CanvasGroup>();
+        if (inicioGrupoCanvasGroup == null)
+        {
+            inicioGrupoCanvasGroup = inicioGrupo.AddComponent<CanvasGroup>();
+        }
+        inicioGrupoCanvasGroup.alpha = 1; 
+
+     
+        StartCoroutine(AnimateLogoAndGroup());
     }
 
-    private void BajarAlpha()
+    private IEnumerator AnimateLogoAndGroup()
     {
-        LeanTween.alpha(inicioGrupo.GetComponent<RectTransform>(), 0f, 1f).setDelay(3.5f);
-        inicioGrupo.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+        yield return StartCoroutine(FadeCanvasGroup(logoCanvasGroup, 0f, 1f, 3f));
+
+        yield return new WaitForSeconds(3f);
+
+
+        yield return StartCoroutine(FadeCanvasGroup(logoCanvasGroup, 1f, 0f, 1.5f));
+
+        yield return StartCoroutine(FadeCanvasGroup(inicioGrupoCanvasGroup, 1f, 0f, 1.5f));
     }
 
-   
+    private IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startAlpha, float endAlpha, float duration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            canvasGroup.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        canvasGroup.alpha = endAlpha;
+    }
 }
