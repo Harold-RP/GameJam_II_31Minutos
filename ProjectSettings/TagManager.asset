@@ -7,6 +7,9 @@ TagManager:
   - Wall
   - Boss
   - Floor
+  - LeftSpawner
+  - RightSpawner
+  - Spawner
   layers:
   - Default
   - TransparentFX
