@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //HOLA QUE TAL
-//A
 
 public class Player : MonoBehaviour
 {
@@ -92,17 +91,17 @@ public class Player : MonoBehaviour
 
 
     void Jump()
-{
-    if (Input.GetKeyDown(KeyCode.W) && isGrounded)  // Cambié a KeyCode.W
     {
-        isJumping = true;
-        jumpTimeCounter = jumpTimeMax;
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-    }
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded)  // Cambié a KeyCode.W
+        {
+            isJumping = true;
+            jumpTimeCounter = jumpTimeMax;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
 
-    // Si se sigue presionando el botón de salto y aún no ha llegado al tiempo máximo
-    if (Input.GetKey(KeyCode.W) && isJumping)  // Cambié a KeyCode.W
-    {
+        // Si se sigue presionando el botón de salto y aún no ha llegado al tiempo máximo
+        if (Input.GetKey(KeyCode.W) && isJumping)  // Cambié a KeyCode.W
+        {
             if (jumpTimeCounter > 0)
             {
                 // Disminuir la fuerza de salto al mantener presionada la tecla
@@ -115,12 +114,12 @@ public class Player : MonoBehaviour
             }
         }
 
-    // Si el jugador suelta el botón de salto, se interrumpe el salto
-    if (Input.GetKeyUp(KeyCode.W))  // Cambié a KeyCode.W
-    {
-        isJumping = false;
+        // Si el jugador suelta el botón de salto, se interrumpe el salto
+        if (Input.GetKeyUp(KeyCode.W))  // Cambié a KeyCode.W
+        {
+            isJumping = false;
+        }
     }
-}
 
 
     // Método para manejar el ataque cuerpo a cuerpo
@@ -128,6 +127,10 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
+            // Activar la animación de ataque
+            animator.SetTrigger("attack0");
+
+            // Detectar los enemigos en el rango de ataque
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, meleeAttackRange);
 
             foreach (Collider2D enemy in hitEnemies)
@@ -153,15 +156,20 @@ public class Player : MonoBehaviour
                     // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
                     enemy.GetComponent<BossHead>().TakeDamage(meleeAttackDamage);
                 }
-                
+
             }
         }
     }
+
+
 
     void HandleRangedAttack()
     {
         if (Input.GetKeyDown(KeyCode.L)) // Suponiendo que la tecla L es para disparar
         {
+            // Activar la animación de ataque usando un Trigger
+            animator.SetTrigger("attack1"); // Cambia "attack" por el nombre de tu Trigger en el Animator
+
             // Instanciar el proyectil en la posición del firePoint
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
 
@@ -175,11 +183,13 @@ public class Player : MonoBehaviour
             Debug.Log("Disparaste un proyectil hacia " + direction);
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
+            animator.SetBool("ground", true);
         }
     }
 
@@ -188,6 +198,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Floor"))
         {
             isGrounded = false;
+            animator.SetBool("ground", false);
         }
     }
 
