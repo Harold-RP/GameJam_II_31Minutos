@@ -15,6 +15,15 @@ public class Boss : MonoBehaviour
     private bool canAttack = true;        // Controla si puede atacar
     private bool isCharging = false;
     private bool canJump = true;
+    public float meleeRange = 2f;            // Radio para el ataque cuerpo a cuerpo
+    public float meleeDamage = 20f;          // Daño del ataque cuerpo a cuerpo
+    public float slowSpeed = 2f;             // Velocidad lenta al acercarse al jugador
+    public float fireAttackDuration = 3f;    // Duración del ataque de fuego
+    private float fireAttackCooldown = 10f;   // Tiempo de espera entre ataques de fuego
+    private float lastFireAttackTime = 0f;    // Última vez que se realizó el ataque de fuego
+    public float Phase4Speed = 5f;
+    public float fireActivationRange = 5f;
+
 
     public float laserDuration = 0.5f;
     public int bossPhase = 1;
@@ -30,13 +39,18 @@ public class Boss : MonoBehaviour
     public Transform firePoint;
     private Transform player;
     private Rigidbody2D rb;
-    CapsuleCollider2D collider;
+    public FireSpawn[] fireSpawns;
+    public GameObject bigBulletPrefab;
     GameObject bossHeadGO;
+    CapsuleCollider2D collider;
 
     void Start()
     {
+
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CapsuleCollider2D>();
+       collider = GetComponent<CapsuleCollider2D>();
+
 
         // Detectar al jugador usando su tag
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -65,12 +79,23 @@ public class Boss : MonoBehaviour
                 case 3:
                     SpawnHead();
                     break;
-                //case 4:
+                case 4:
+                    if (Time.time - lastFireAttackTime >= fireAttackCooldown)
+                    {
+                        StartCoroutine(FireWallAttack());  // Ejecuta el ataque de fuego si el cooldown ha terminado
+                        lastFireAttackTime = Time.time;    // Actualiza el tiempo del último ataque
+                    }
+                    else
+                    {
+                        MoveTowardsPlayer();  // Mientras tanto, el jefe se mueve hacia el jugador
+                    }
+                    break;
+                case 5:
+                    Mirror();
+                    AimAtPlayer();
+                    StartCoroutine(Phase5Attack());
 
-                //    break;
-                //case 5:
-            
-                //    break;
+                    break;
             }
 
         }
@@ -182,30 +207,6 @@ public class Boss : MonoBehaviour
     }
 
 
-    void SpawnHead()
-    {
-        if (!isHeadSpawned)//Spawn
-        {
-            isHeadSpawned = true;
-            collider.enabled = false;
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-            bossHeadGO = Instantiate(headPrefab, transform.position, transform.rotation);
-
-        }
-        else//Idle and check if its dead
-        {
-            //animacion de idle
-            BossHead bossHead = bossHeadGO.GetComponent<BossHead>();
-            if (bossHead == null)//murió la cabeza
-            {
-                isHeadSpawned = false;
-                rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-                collider.enabled = true;
-                bossPhase = 1;//Pasar a la siguiente fase
-            }
-        }
-    }
-
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
@@ -214,13 +215,149 @@ public class Boss : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+            CheckPhaseChange();
+        }
     }
 
     void Die()
     {
         Debug.Log("El jefe ha sido derrotado.");
-       //GameObject.Destroy(gameObject);
+        GameObject.Destroy(gameObject);
     }
+
+
+    //Phase 3 ------------------------------------------------------------------------
+    void SpawnHead()
+    {
+        if (!isHeadSpawned) // Si la cabeza no ha sido generada aún
+        {
+            isHeadSpawned = true;
+            collider.enabled = false;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+            bossHeadGO = Instantiate(headPrefab, transform.position, transform.rotation);
+        }
+        else // Cabeza ya generada, revisar si sigue viva
+        {
+            if (bossHeadGO == null) // La cabeza ha sido destruida
+            {
+                isHeadSpawned = false;
+                rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY; // Liberar restricción en Y
+                collider.enabled = true;
+                bossPhase = 1; // Pasar a la siguiente fase
+            }
+            else
+            {
+                // Aquí puedes agregar la animación de idle u otra lógica si la cabeza aún existe.
+                BossHead bossHead = bossHeadGO.GetComponent<BossHead>();
+                if (bossHead == null)
+                {
+                    // En caso de que haya problemas con el componente (aunque esto debería cubrirse con el chequeo anterior)
+                    isHeadSpawned = false;
+                    rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+                    collider.enabled = true;
+                    bossPhase = 1;
+                }
+            }
+        }
+    }
+
+
+
+
+    //Phase 4 ------------------------------------------------------------------------
+    IEnumerator Phase4Behaviour()
+    {
+        canAttack = false;
+
+        // Movimiento lento hacia el jugador
+        MoveTowardsPlayer(slowSpeed);
+
+        // Si está dentro del rango de ataque cuerpo a cuerpo
+        if (Vector2.Distance(transform.position, player.position) <= meleeRange)
+        {
+            MeleeAttack();
+        }
+
+        // Realizar ataque de fuego desde las paredes/suelo
+        StartCoroutine(FireWallAttack());
+
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+    }
+
+
+
+    void MoveTowardsPlayer(float speed)
+    {
+        Vector2 direction = (player.position - transform.position).normalized;
+        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+    }
+    void MeleeAttack()
+    {
+        Debug.Log("El jefe realiza un ataque cuerpo a cuerpo.");
+
+        // Si el jugador está dentro del rango de ataque
+        if (Vector2.Distance(transform.position, player.position) <= meleeRange)
+        {
+            Player playerHealth = player.GetComponent<Player>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(meleeDamage);
+            }
+        }
+    }
+
+    IEnumerator FireWallAttack()
+    {
+        Debug.Log("El jefe activa el ataque de fuego desde las paredes y el suelo.");
+
+        isAttacking = true;
+        canAttack = false; // El jefe no puede moverse ni atacar mientras dure el ataque de fuego.
+
+        // Generar fuego en cada punto de spawn usando el método ActivateFire de cada FireSpawn
+        foreach (FireSpawn fireSpawn in fireSpawns)
+        {
+            fireSpawn.ActivateFire();
+        }
+
+        // El fuego dura 3 segundos (ya controlado en cada FireSpawn)
+        yield return new WaitForSeconds(fireAttackDuration);
+
+        isAttacking = false;
+        canAttack = true;
+        Debug.Log("El ataque de fuego ha terminado.");
+    }
+
+    void MoveTowardsPlayer()
+    {
+        Vector2 direction = (player.position - transform.position).normalized;
+        rb.velocity = new Vector2(direction.x * Phase4Speed, rb.velocity.y);  // Ajusta `moveSpeed` a la velocidad que desees
+        Debug.Log("El jefe se mueve hacia el jugador.");
+    }
+
+    //Phase 5 ------------------------------------------------------------------------
+    IEnumerator Phase5Attack()
+    {
+        Debug.Log("El jefe lanza 3 balas grandes que rebotarán.");
+
+        isAttacking = true;
+
+        // Lanzar 3 balas grandes
+        for (int i = 0; i < 3; i++)
+        {
+            Instantiate(bigBulletPrefab, firePoint.position, firePoint.rotation);
+            yield return new WaitForSeconds(0.5f); // Intervalo entre disparos
+        }
+
+        // Esperar antes de que el jefe pueda atacar de nuevo
+        yield return new WaitForSeconds(attackCooldown);
+
+        isAttacking = false;
+        canAttack = true;
+    }
+
 
 
     // M�todo para detectar la colisi�n con las paredes
@@ -251,5 +388,46 @@ public class Boss : MonoBehaviour
             isGrounded = false;
             Debug.Log("El jefe ha dejado de estar en el suelo.");
         }
+    }
+
+
+
+//  Cambio de fase
+
+    void CheckPhaseChange()
+    {
+        // Cada 100 de vida cambiamos de fase
+        if (currentHealth <= 400 && bossPhase == 1)
+        {
+            StartCoroutine(ChangePhase(2));
+        }
+        else if (currentHealth <= 300 && bossPhase == 2)
+        {
+            StartCoroutine(ChangePhase(3));
+        }
+        else if (currentHealth <= 200 && bossPhase == 3)
+        {
+            StartCoroutine(ChangePhase(4));
+        }
+        else if (currentHealth <= 100 && bossPhase == 4)
+        {
+            StartCoroutine(ChangePhase(5));
+        }
+    }
+
+    IEnumerator ChangePhase(int newPhase)
+    {
+        // El jefe se queda quieto durante 4 segundos antes de cambiar de fase
+        canAttack = false; // Deshabilita los ataques
+        rb.velocity = Vector2.zero; // Detén al jefe
+        Debug.Log("Cambiando a la fase " + newPhase + ". Pausa de 4 segundos.");
+
+        yield return new WaitForSeconds(4f); // Pausa de 4 segundos
+
+        // Cambia de fase
+        bossPhase = newPhase;
+        canAttack = true; // Habilita los ataques nuevamente
+
+        Debug.Log("El jefe ha cambiado a la fase " + newPhase);
     }
 }

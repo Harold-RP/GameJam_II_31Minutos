@@ -15,15 +15,13 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Si el proyectil choca con un enemigo
-        if (collision.gameObject.CompareTag("Boss"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("El proyectil golpeó a " + collision.gameObject.name);
-            // Lógica para hacerle daño al enemigo
-            Boss enemyHealth = collision.gameObject.GetComponent<Boss>();
-            if (enemyHealth != null)
+            Debug.Log("El proyectil golpeó al enemigo.");
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
             {
-                enemyHealth.TakeDamage(damage);
+                enemy.TakeDamage(damage);
             }
 
             // Destruir el proyectil tras impactar
@@ -31,18 +29,18 @@ public class Bullet : MonoBehaviour
         }
 
         // Si el proyectil choca con el jugador
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("El proyectil golpeó al jugador.");
-            Player player = collision.gameObject.GetComponent<Player>();
-            if (player != null)
-            {
-                player.TakeDamage(damage);
-            }
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    Debug.Log("El proyectil golpeó al jugador.");
+        //    Player player = collision.gameObject.GetComponent<Player>();
+        //    if (player != null)
+        //    {
+        //        player.TakeDamage(damage);
+        //    }
 
-            // Destruir el proyectil tras impactar
-            Destroy(gameObject);
-        }
+        //    // Destruir el proyectil tras impactar
+        //    Destroy(gameObject);
+        //}
 
         // Si el proyectil choca con el jefe
         if (collision.gameObject.CompareTag("Boss"))
@@ -57,15 +55,16 @@ public class Bullet : MonoBehaviour
             // Destruir el proyectil tras impactar
             Destroy(gameObject);
         }
-
-        // Si el proyectil choca con la cabeza del jefe
         if (collision.gameObject.CompareTag("BossHead"))
         {
+            Debug.Log("El proyectil golpeó a la cabeza.");           
             BossHead bossHead = collision.gameObject.GetComponent<BossHead>();
             if (bossHead != null)
-            {
+            {             
                 bossHead.TakeDamage(damage);
             }
+
+            // Destruir el proyectil tras impactar
             Destroy(gameObject);
         }
 

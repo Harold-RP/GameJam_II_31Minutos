@@ -23,6 +23,7 @@ public class BossHead : MonoBehaviour
     public Transform rightLimit;
     public Transform downLimit;
     public UnityEvent<GameObject> onShoot;
+    private Boss boss;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,11 @@ public class BossHead : MonoBehaviour
         leftLimit = GameObject.FindWithTag("LeftSpawner").transform;
         rightLimit = GameObject.FindWithTag("RightSpawner").transform;
         downLimit = GameObject.FindWithTag("Spawner").transform;
+
+        if (boss == null)
+        {
+            boss = GetComponentInParent<Boss>(); // Si BossHead es un hijo del jefe
+        }
     }
 
     // Update is called once per frame
@@ -75,11 +81,11 @@ public class BossHead : MonoBehaviour
                 isGoingDown = false;
         }
         else//subir
-        {            
+        {
             if (upLimit > transform.position.y)
                 transform.Translate(Vector2.up * speed * Time.deltaTime);
             else
-            {                
+            {
                 isGoingDown = true;
                 isMovingVertical = false;
             }
@@ -107,10 +113,12 @@ public class BossHead : MonoBehaviour
     public void TakeDamage(float damage)
     {
         life -= damage;
-
+        Debug.Log("La cabeza del jefe ha recibido daño. Vida restante: " + life);
         if (life <= 0)
         {
+            
             Destroy(gameObject);
+           // boss.TakeDamage(100);
         }
     }
 }

@@ -10,9 +10,9 @@ TagManager:
   - LeftSpawner
   - RightSpawner
   - Spawner
+  - Enemy
+  - Bullet
   - BossHead
-  - ScreenCoverBullet
-  - PlayerBullet
   layers:
   - Default
   - TransparentFX

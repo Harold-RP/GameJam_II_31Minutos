@@ -42,10 +42,5 @@ public class ScreenCoverBullet : MonoBehaviour
             ui.CoverScreen();
             Destroy(gameObject);
         }
-
-        if (collision.gameObject.CompareTag("PlayerBullet"))
-        {
-            Destroy(gameObject);
-        }
     }
 }
