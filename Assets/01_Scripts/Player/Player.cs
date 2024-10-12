@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 10f;
     public Transform firePoint;
-    public float maxHealth = 100f;   // Vida máxima del jugador
+    public float maxHealth = 3f;   // Vida máxima del jugador
     private float currentHealth;
 
     private Rigidbody2D rb;
@@ -30,12 +30,56 @@ public class Player : MonoBehaviour
     public Animator animator;
     public TextMeshProUGUI powerUpMessage;
 
+
+    public GameObject lifePrefab;  // Prefab de la imagen de vida (ícono)
+    public Transform livesPanel;   // El panel que contendrá las imágenes de vidas
+
+    private List<GameObject> lifeIcons = new List<GameObject>();
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;  // Inicializar la vida actual
         rb.gravityScale = 2.5f;     // Escala de gravedad normal
+        UpdateLivesUI();
     }
+
+    public void LoseLife()
+    {
+        if (maxHealth > 0)
+        {
+            maxHealth--;
+            UpdateLivesUI();
+        }
+    }
+
+    public void GainLife()
+    {
+        maxHealth++;
+        UpdateLivesUI();
+    }
+
+    void UpdateLivesUI()
+    {
+        // Limpiar las imágenes actuales de vidas
+        foreach (GameObject icon in lifeIcons)
+        {
+            Destroy(icon);
+        }
+        lifeIcons.Clear();
+
+        // Añadir tantas imágenes como vidas tenga el jugador
+        for (int i = 0; i < maxHealth; i++)
+        {
+            GameObject lifeIcon = Instantiate(lifePrefab, livesPanel);
+
+            // Ajustar la posición de cada imagen según su índice
+            RectTransform rectTransform = lifeIcon.GetComponent<RectTransform>();
+            rectTransform.anchoredPosition = new Vector2(i * 50, 0);  // Separar las imágenes con un espacio de 50 unidades
+            lifeIcons.Add(lifeIcon);
+        }
+    }
+
 
     void Update()
     {
@@ -127,42 +171,53 @@ public class Player : MonoBehaviour
 
 
     // Método para manejar el ataque cuerpo a cuerpo
+    private bool canAttack = true;
+
     void HandleMeleeAttack()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (canAttack && Input.GetKeyDown(KeyCode.K))
         {
-            // Activar la animación de ataque
-            animator.SetTrigger("attack0");
+            StartCoroutine(PerformMeleeAttack());
+        }
+    }
 
-            // Detectar los enemigos en el rango de ataque
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, meleeAttackRange);
+    IEnumerator PerformMeleeAttack()
+    {
+        // Evitar que el jugador ataque de inmediato de nuevo
+        canAttack = false;
 
-            foreach (Collider2D enemy in hitEnemies)
+        // Activar la animación de ataque
+        animator.SetTrigger("attack0");
+
+        // Detectar los enemigos en el rango de ataque
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(firePoint.position, meleeAttackRange);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy.CompareTag("Boss"))
             {
-                if (enemy.CompareTag("Boss"))
-                {
-                    Debug.Log("Golpeaste a " + enemy.name);
-                    // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
-                    enemy.GetComponent<Boss>().TakeDamage(meleeAttackDamage);
-                }
+                Debug.Log("Golpeaste a " + enemy.name);
+                enemy.GetComponent<Boss>().TakeDamage(meleeAttackDamage);
+            }
 
-                if (enemy.CompareTag("Enemy"))
-                {
-                    Debug.Log("Golpeaste a " + enemy.name);
+            if (enemy.CompareTag("Enemy"))
+            {
+                Debug.Log("Golpeaste a " + enemy.name);
+                enemy.GetComponent<Enemy>().TakeDamage(meleeAttackDamage);
+            }
 
-                    // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
-                    enemy.GetComponent<Enemy>().TakeDamage(meleeAttackDamage);
-                }
-                if (enemy.CompareTag("BossHead"))
-                {
-                    Debug.Log("Golpeaste a " + enemy.name);
-
-                    // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
-                    enemy.GetComponent<BossHead>().TakeDamage(meleeAttackDamage);
-                }
-
+            if (enemy.CompareTag("BossHead"))
+            {
+                Debug.Log("Golpeaste a " + enemy.name);
+                enemy.GetComponent<BossHead>().TakeDamage(meleeAttackDamage);
             }
         }
+
+        // Esperar el tiempo del cooldown antes de permitir otro ataque
+        yield return new WaitForSeconds(0.2f);
+
+        // Permitir atacar de nuevo
+        canAttack = true;
     }
 
 
@@ -209,7 +264,10 @@ public class Player : MonoBehaviour
     // Método para recibir daño
     public void TakeDamage(float damage)
     {
+
         currentHealth -= damage;
+        LoseLife();
+        UpdateLivesUI();
 
         if (currentHealth <= 0)
         {
