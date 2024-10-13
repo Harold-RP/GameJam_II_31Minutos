@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BossHead : MonoBehaviour
 {
@@ -13,9 +15,9 @@ public class BossHead : MonoBehaviour
     public float upLimit = 7f;
     public float TimeBtwDirection = 3f;
     float directionTimer = 0f;
-    bool isGoingLeft = false;
-    bool isMovingVertical = false;
-    bool isGoingDown = true;
+    bool isGoingLeft = true;
+    bool isMovingVertical = true;
+    bool isGoingDown = false;
     [Header("---------------------- References ------------------------")]
     public GameObject bulletPrefab;
     public Transform firePoints;
@@ -34,7 +36,8 @@ public class BossHead : MonoBehaviour
 
         if (boss == null)
         {
-            boss = GetComponentInParent<Boss>(); // Si BossHead es un hijo del jefe
+            //boss = GetComponentInParent<Boss>(); // Si BossHead es un hijo del jefe
+            boss = GameObject.FindWithTag("Boss").GetComponent<Boss>();
         }
     }
 
@@ -104,7 +107,7 @@ public class BossHead : MonoBehaviour
         else//va a la derecha
         {
             if (transform.position.x < rightLimit.position.x)
-                transform.Translate(Vector2.right * speed * Time.deltaTime);
+                transform.Translate(Vector2.right * speed * Time.deltaTime);//la rotacion de la cabeza está al revés, por eso el vector2.left
             else
                 isGoingLeft = true;
         }
@@ -112,11 +115,11 @@ public class BossHead : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        life -= damage;
+        //life -= damage;
+        boss.TakeDamage(damage);
         Debug.Log("La cabeza del jefe ha recibido daño. Vida restante: " + life);
-        if (life <= 0)
+        if (boss.currentHealth <= 0)
         {
-            
             Destroy(gameObject);
            // boss.TakeDamage(100);
         }

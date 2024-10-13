@@ -182,7 +182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 100
   timer: 0
-  timeBtwShoot: 2
+  timeBtwShoot: 5
   speed: 10
   upLimit: 7
   TimeBtwDirection: 2

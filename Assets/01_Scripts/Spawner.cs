@@ -5,9 +5,9 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [Header("---------------------- Stats ------------------------")]
-    public float timeBtwSpawn = 10f;
+    public float timeBtwSpawn = 15f;
     public float timer = 0f;
-    public int enemiesToSpawn = 10;
+    public int enemiesToSpawn = 5;
     [Header("---------------------- References ------------------------")]
     public GameObject enemyPrefab;
     public Transform leftPoint;

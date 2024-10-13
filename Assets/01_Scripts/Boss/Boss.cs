@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Boss : MonoBehaviour
@@ -30,7 +32,7 @@ public class Boss : MonoBehaviour
     bool isAttacking = false;
 
     public float maxHealth = 200f; 
-    private float currentHealth;
+    public float currentHealth;
     bool isHeadSpawned = false;
 
     [Header("---------------------- References ------------------------")]
@@ -48,13 +50,16 @@ public class Boss : MonoBehaviour
     public GameObject handPrefab;
     public GameObject BossheadPrefab;
     public Transform[] spawnPoints;
+    public TextMeshProUGUI lifeText;
+    public Image lifeBar;
 
     void Start()
     {
 
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-       collider = GetComponent<CapsuleCollider2D>();
+        collider = GetComponent<CapsuleCollider2D>();
+        UpdateLifeBar();
 
 
         // Detectar al jugador usando su tag
@@ -224,8 +229,8 @@ public class Boss : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-
-        if (currentHealth <= 0)
+        UpdateLifeBar();
+        if (currentHealth <= 0 && bossPhase > 5)
         {
             Die();
         }
@@ -241,6 +246,27 @@ public class Boss : MonoBehaviour
         GameObject.Destroy(gameObject);
     }
 
+    void UpdateLifeBar()
+    {
+        lifeBar.fillAmount = currentHealth / maxHealth;
+        lifeText.text = "" + (int)currentHealth;
+        if (lifeBar.fillAmount < 1f / 3f)
+        {
+            lifeBar.color = Color.red;
+            lifeText.color = Color.red;
+        }
+        else if (lifeBar.fillAmount < 2f / 3f)
+        {
+            lifeBar.color = Color.yellow;
+            lifeText.color = Color.yellow;
+        }
+        else
+        {
+            lifeBar.color = Color.green;
+            lifeText.color = Color.green;
+        }
+    }
+
 
     //Phase 3 ------------------------------------------------------------------------
     void SpawnHead()
@@ -250,6 +276,7 @@ public class Boss : MonoBehaviour
             isHeadSpawned = true;
             collider.enabled = false;
             rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             bossHeadGO = Instantiate(headPrefab, transform.position, transform.rotation);
         }
         else // Cabeza ya generada, revisar si sigue viva
@@ -271,6 +298,7 @@ public class Boss : MonoBehaviour
                     // En caso de que haya problemas con el componente (aunque esto debería cubrirse con el chequeo anterior)
                     isHeadSpawned = false;
                     rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+                    rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
                     collider.enabled = true;
                     bossPhase = 4;
                 }
@@ -410,26 +438,49 @@ public class Boss : MonoBehaviour
 
 //  Cambio de fase
 
+    //void CheckPhaseChange()
+    //{
+    //    // Cada 100 de vida cambiamos de fase
+    //    if (currentHealth <= 400 && bossPhase == 1)
+    //    {
+    //        StartCoroutine(ChangePhase(2));
+    //    }
+    //    else if (currentHealth <= 300 && bossPhase == 2)
+    //    {
+    //        StartCoroutine(ChangePhase(3));
+    //        rb.isKinematic = false;
+    //    }
+    //    else if (currentHealth <= 200 && bossPhase == 3)
+    //    {
+    //        rb.freezeRotation = true;
+    //        StartCoroutine(ChangePhase(4));
+    //    }
+    //    else if (currentHealth <= 100 && bossPhase == 4)
+    //    {
+    //        StartCoroutine(ChangePhase(5));
+    //    }
+    //}
+
     void CheckPhaseChange()
     {
-        // Cada 100 de vida cambiamos de fase
-        if (currentHealth <= 400 && bossPhase == 1)
+        if (currentHealth <= 0)
         {
-            StartCoroutine(ChangePhase(2));
-        }
-        else if (currentHealth <= 300 && bossPhase == 2)
-        {
-            StartCoroutine(ChangePhase(3));
-            rb.isKinematic = false;
-        }
-        else if (currentHealth <= 200 && bossPhase == 3)
-        {
-            rb.freezeRotation = true;
-            StartCoroutine(ChangePhase(4));
-        }
-        else if (currentHealth <= 100 && bossPhase == 4)
-        {
-            StartCoroutine(ChangePhase(5));
+            if (bossPhase == 2)
+            {
+                rb.isKinematic = false;
+            }
+            else if (bossPhase == 3)
+            {
+                rb.freezeRotation = true;
+            }
+            bossPhase++;
+            if (bossPhase > 5)
+            {
+                return;
+            }
+            StartCoroutine(ChangePhase(bossPhase));
+            currentHealth = maxHealth;
+            UpdateLifeBar();
         }
     }
 

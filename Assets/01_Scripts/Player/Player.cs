@@ -28,7 +28,10 @@ public class Player : MonoBehaviour
     public float lowJumpMultiplier = 3f;     // Para saltos cortos
 
     public Animator animator;
-    public TextMeshProUGUI powerUpMessage;
+    public RectTransform speedUpImg;
+    public RectTransform speedDownImg;
+    public RectTransform lifeUpImg;
+    public RectTransform lifeDownImg;
 
 
     public GameObject lifePrefab;  // Prefab de la imagen de vida (ícono)
@@ -306,12 +309,12 @@ public class Player : MonoBehaviour
                 if (Random.Range(0, 2) == 0)
                 {
                     currentHealth -= powerUp.value;
-                    StartCoroutine(showMessage("-Vida-"));
+                    StartCoroutine(showPowerUpImg(lifeDownImg));
                 }
                 else
                 {
                     currentHealth += powerUp.value;
-                    StartCoroutine(showMessage("+Vida+"));
+                    StartCoroutine(showPowerUpImg(lifeUpImg));
                 }
                 break;
 
@@ -319,22 +322,22 @@ public class Player : MonoBehaviour
                 if(Random.Range(0, 2) == 0)
                 {
                     moveSpeed -= powerUp.value;
-                    StartCoroutine(showMessage("-Velocidad-"));
+                    StartCoroutine(showPowerUpImg(speedDownImg));
                 }
                 else
                 {
                     moveSpeed += powerUp.value;
-                    StartCoroutine(showMessage("+Velocidad+"));
+                    StartCoroutine(showPowerUpImg(speedUpImg));
                 }
                 break;
         }
     }
 
-    IEnumerator showMessage(string text)
+    IEnumerator showPowerUpImg(RectTransform img)
     {
-        powerUpMessage.text = text;
+        LeanTween.alpha(img, 1f, 1f);
         yield return new WaitForSeconds(3f);
-        powerUpMessage.text = "";
+        LeanTween.alpha(img, 0, 1f);
     }
 
     private void OnDrawGizmosSelected()
