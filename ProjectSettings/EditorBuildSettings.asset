@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00_Scenes/HomeScreen.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/00_Scenes/TimeLine.unity
+    guid: c0aa8844afcf72b41a12dde726b797a2
+  - enabled: 1
+    path: Assets/00_Scenes/VideoTwo.unity
+    guid: ce1777b98f3a2eb4896bc0c3eb8580a8
   m_configObjects: {}
