@@ -99,15 +99,15 @@ public class BossHead : MonoBehaviour
     {
         if (isGoingLeft)
         {
-            if (leftLimit.position.x < transform.position.x)
-                transform.Translate(Vector2.left * speed * Time.deltaTime);
+            if (leftLimit.position.x <= transform.position.x)
+                transform.Translate(Vector3.left * speed * Time.deltaTime);
             else
                 isGoingLeft = false;
         }
         else//va a la derecha
         {
-            if (transform.position.x < rightLimit.position.x)
-                transform.Translate(Vector2.right * speed * Time.deltaTime);
+            if (transform.position.x <= rightLimit.position.x)
+                transform.Translate(Vector3.right * speed * Time.deltaTime);
             else
                 isGoingLeft = true;
         }

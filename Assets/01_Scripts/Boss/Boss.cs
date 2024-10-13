@@ -378,7 +378,8 @@ public class Boss : MonoBehaviour
     //Phase 5 ------------------------------------------------------------------------
     IEnumerator Phase5Attack()
     {
- 
+        lifeBar.enabled = false;
+        lifeText.enabled = false;
         // Aquí puedes detener cualquier movimiento del jefe
         yield return new WaitForSeconds(8f);
 
