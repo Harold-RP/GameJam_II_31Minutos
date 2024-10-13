@@ -53,6 +53,8 @@ public class Boss : MonoBehaviour
     public TextMeshProUGUI lifeText;
     public Image lifeBar;
 
+    public Animator animator;
+
     void Start()
     {
 
@@ -82,15 +84,19 @@ public class Boss : MonoBehaviour
                     StartCoroutine(DecideAndPerformAttack());
                     break;
                 case 2:
+
+                    animator.SetInteger("phase", 2);
                     TeleportToRandomCorner();
                     Mirror();
                     AimAtPlayer();
                     StartCoroutine(LaserAttack());
                     break;
                 case 3:
+                    animator.SetInteger("phase", 3);
                     SpawnHead();
                     break;
                 case 4:
+                    animator.SetInteger("phase", 3);
                     if (Time.time - lastFireAttackTime >= fireAttackCooldown)
                     {
                         StartCoroutine(FireWallAttack());  // Ejecuta el ataque de fuego si el cooldown ha terminado
@@ -102,6 +108,7 @@ public class Boss : MonoBehaviour
                     }
                     break;
                 case 5:
+                    animator.SetInteger("phase", 5);
                     Mirror();
                     AimAtPlayer();
                     StartCoroutine(Phase5Attack());
