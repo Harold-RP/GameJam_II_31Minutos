@@ -27,7 +27,7 @@ public class CreditsManager : MonoBehaviour
 
     void ShowCredits()
     {
-        LeanTween.moveY(allCredits, 1860, creditsDuration).setDelay(2f).setOnComplete(ShowReturnToMenu);
+        LeanTween.moveY(allCredits, -1840, creditsDuration).setDelay(2f).setOnComplete(ShowReturnToMenu);
     }
 
     void ShowReturnToMenu()

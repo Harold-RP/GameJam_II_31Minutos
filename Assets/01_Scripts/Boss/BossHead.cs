@@ -15,7 +15,7 @@ public class BossHead : MonoBehaviour
     public float upLimit = 7f;
     public float TimeBtwDirection = 3f;
     float directionTimer = 0f;
-    bool isGoingLeft = true;
+    public bool isGoingLeft = true;
     bool isMovingVertical = true;
     bool isGoingDown = false;
     [Header("---------------------- References ------------------------")]
@@ -99,29 +99,35 @@ public class BossHead : MonoBehaviour
     {
         if (isGoingLeft)
         {
-            if (leftLimit.position.x < transform.position.x)
-                transform.Translate(Vector2.left * speed * Time.deltaTime);
+            if (leftLimit.position.x <= transform.position.x)
+                transform.Translate(Vector3.left * speed * Time.deltaTime);
             else
                 isGoingLeft = false;
         }
         else//va a la derecha
         {
-            if (transform.position.x < rightLimit.position.x)
-                transform.Translate(Vector2.right * speed * Time.deltaTime);//la rotacion de la cabeza está al revés, por eso el vector2.left
+            if (transform.position.x <= rightLimit.position.x)
+                transform.Translate(Vector3.right * speed * Time.deltaTime);
             else
                 isGoingLeft = true;
         }
     }
 
+
+
     public void TakeDamage(float damage)
     {
-        //life -= damage;
-        boss.TakeDamage(damage);
-        Debug.Log("La cabeza del jefe ha recibido daño. Vida restante: " + life);
-        if (boss.currentHealth <= 0)
+        if (boss.currentHealth-damage <= 0)
         {
+            // Reactivar el jefe en la fase 4
+            boss.OnBossHeadDestroyed();
+            // Destruir la cabeza cuando la vida del jefe llegue a 0
             Destroy(gameObject);
-           // boss.TakeDamage(100);
+        }
+        else
+        {
+            boss.TakeDamage(damage); // Pasar el daño al jefe principal
         }
     }
+
 }
