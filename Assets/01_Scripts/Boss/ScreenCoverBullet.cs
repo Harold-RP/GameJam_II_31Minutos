@@ -9,6 +9,10 @@ public class ScreenCoverBullet : MonoBehaviour
     public float rotationSpeed = 50f;
     Transform player;
 
+
+    public AudioSource audioSource;   // Referencia al AudioSource
+    public AudioClip creep;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +42,7 @@ public class ScreenCoverBullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            audioSource.PlayOneShot(creep);
             ScreenCoverUI ui = collision.gameObject.GetComponent<ScreenCoverUI>();
             ui.CoverScreen();
             Destroy(gameObject);

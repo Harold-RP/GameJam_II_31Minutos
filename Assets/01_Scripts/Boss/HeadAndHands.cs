@@ -26,6 +26,12 @@ public class HeadAndHands : MonoBehaviour
 
     private Transform player;
     private Boss bossController;
+
+    public AudioSource audioSource;   // Referencia al AudioSource
+    public AudioClip shootSound;
+    public AudioClip damages;
+    public AudioClip destroy;
+    public AudioClip final;
     public void SetSharedLife(float life)
     {
         sharedLife = life;
@@ -114,6 +120,7 @@ public class HeadAndHands : MonoBehaviour
     {
         while (isHeadActive) // Ataque mientras la cabeza está activa
         {
+            audioSource.PlayOneShot(shootSound);
             yield return StartCoroutine(Phase5Attack()); // Llamar a la función de ataque
             yield return new WaitForSeconds(attackCooldown); // Esperar antes de atacar de nuevo
         }
@@ -126,6 +133,7 @@ public class HeadAndHands : MonoBehaviour
             GameObject platform = Instantiate(platformPrefab, transform.position, Quaternion.identity);
             platform.GetComponent<Platform>().InitMovement(moveDistance, moveSpeed, startPosition); // Pasar los valores de movimiento a la plataforma
         }
+        audioSource.PlayOneShot(destroy);
         Destroy(gameObject); // Destruir la mano original
     }
 
@@ -136,13 +144,14 @@ public class HeadAndHands : MonoBehaviour
         {
             if (destroyedHands == totalHands)
             {
-
+                audioSource.PlayOneShot(damages);
                 sharedLife -= damage;
                
 
                 // Verificar si la cabeza es destruida
                 if (sharedLife <= 0)
                 {
+                    audioSource.PlayOneShot(final);
                     Destroy(gameObject); // Destruir la cabeza
                 }
             }
@@ -153,6 +162,7 @@ public class HeadAndHands : MonoBehaviour
         }
          else if (this.CompareTag("Hand"))
         {
+            audioSource.PlayOneShot(damages);
             sharedLife -= damage; // Aplicar daño a las manos
            // bossController.UpdateSharedLife(-damage);
         }

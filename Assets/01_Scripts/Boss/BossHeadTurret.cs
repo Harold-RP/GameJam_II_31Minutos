@@ -5,6 +5,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class BossHeadTurret : MonoBehaviour
 {
+   
+   
     void OnEnable()
     {
         GetComponentInParent<BossHead>()?.onShoot.AddListener(Shoot);
@@ -17,6 +19,7 @@ public class BossHeadTurret : MonoBehaviour
 
     void Shoot(GameObject bulletPrefab)
     {
+       
         Instantiate(bulletPrefab, transform.position, transform.rotation);
     }
 }

@@ -58,6 +58,18 @@ public class Boss : MonoBehaviour
 
     public List<GameObject> wallpaperObjects;
 
+    public AudioSource audioSource;   
+    public AudioClip charge;
+    public AudioClip jump;
+    public AudioClip laser;
+    public AudioClip teleport;
+    public AudioClip fire;
+    public AudioClip proyectiles;
+    public AudioClip dam;
+    public AudioClip death;
+    public AudioClip walk;
+    public AudioClip final;
+
     void Start()
     {
 
@@ -181,7 +193,7 @@ public class Boss : MonoBehaviour
 
         // Aplicar velocidad directamente en la direcci�n del jugador
         rb.velocity = new Vector2(direction.x * chargeSpeed, rb.velocity.y);
-
+        audioSource.PlayOneShot(charge);
         Debug.Log("El jefe est� embistiendo al jugador en la direcci�n: " + direction);
     }
 
@@ -196,6 +208,7 @@ public class Boss : MonoBehaviour
             Vector2 jumpDirection = (player.position - transform.position).normalized;
             rb.velocity = new Vector2(jumpDirection.x * jumpForce, jumpForce);
 
+            audioSource.PlayOneShot(jump);
             Debug.Log("El jefe ha saltado hacia el jugador en la direcci�n: " + jumpDirection);
             canJump = true;
         }
@@ -231,6 +244,7 @@ public class Boss : MonoBehaviour
         float attackTimer = 0f;
         float laserInterval = 0.03f; // Intervalo entre disparos de láser
 
+        audioSource.PlayOneShot(laser);
         while (attackTimer < laserDuration)
         {
             Instantiate(laserPrefab, firePoint.position, firePoint.rotation);
@@ -251,6 +265,7 @@ public class Boss : MonoBehaviour
         transform.position = corners[randomIndex].position;
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
+        audioSource.PlayOneShot(teleport);
     }
 
 
@@ -258,6 +273,7 @@ public class Boss : MonoBehaviour
     {
         currentHealth -= damage;
         UpdateLifeBar();
+        audioSource.PlayOneShot(dam);
         if (currentHealth <= 0 && bossPhase > 5)
         {
             Die();
@@ -270,6 +286,7 @@ public class Boss : MonoBehaviour
 
     void Die()
     {
+        audioSource.PlayOneShot(death);
         Debug.Log("El jefe ha sido derrotado.");
         GameObject.Destroy(gameObject);
     }
@@ -357,6 +374,7 @@ public class Boss : MonoBehaviour
 
     void MoveTowardsPlayer(float speed)
     {
+        
         Vector2 direction = (player.position - transform.position).normalized;
         rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
     }
@@ -377,6 +395,7 @@ public class Boss : MonoBehaviour
 
     IEnumerator FireWallAttack()
     {
+        audioSource.PlayOneShot(fire);
         Debug.Log("El jefe activa el ataque de fuego desde las paredes y el suelo.");
 
         isAttacking = true;
@@ -398,6 +417,7 @@ public class Boss : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
+        audioSource.PlayOneShot(walk);
         Vector2 direction = (player.position - transform.position).normalized;
         rb.velocity = new Vector2(direction.x * Phase4Speed, rb.velocity.y);  // Ajusta `moveSpeed` a la velocidad que desees
         Debug.Log("El jefe se mueve hacia el jugador.");
@@ -424,6 +444,7 @@ public class Boss : MonoBehaviour
         hand2.GetComponent<HeadAndHands>().SetSharedLife(currentHealth);
         head.GetComponent<HeadAndHands>().SetSharedLife(currentHealth);
 
+        audioSource.PlayOneShot(final);
 
     }
 
