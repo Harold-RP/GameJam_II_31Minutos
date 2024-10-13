@@ -417,7 +417,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Precione Doble click en la pantalla si decea Omitir la Cinematica
+  m_text: Doble clic en la pantalla para omitir el video.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -529,8 +529,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 618.0394, y: -414}
-  m_SizeDelta: {x: 916.821, y: 44.887}
+  m_AnchoredPosition: {x: 766.3098, y: -414}
+  m_SizeDelta: {x: 620.28, y: 44.887}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &926522804
 MonoBehaviour:
@@ -1054,7 +1054,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d8f0db1519c024e438290733b82c9b25, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cdafb3b6cbc0ad04bb1795c4fd1d723f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1081,15 +1081,15 @@ RectTransform:
   m_GameObject: {fileID: 2061570452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3249011, y: 0.3249011, z: 0.3249011}
+  m_LocalScale: {x: 0.3708421, y: 0.3708421, z: 0.3708421}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 588914896}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -64.0002, y: 22.728043}
-  m_SizeDelta: {x: 844.519, y: 1164.439}
+  m_AnchoredPosition: {x: -58.207, y: 76.836}
+  m_SizeDelta: {x: 808.858, y: 1497.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &2061570456
 CanvasGroup:
