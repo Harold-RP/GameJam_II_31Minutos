@@ -106,11 +106,33 @@ MonoBehaviour:
   attackCooldown: 2
   minChargeDistance: 5
   maxJumpDistance: 8
+  meleeRange: 2
+  meleeDamage: 20
+  slowSpeed: 2
+  fireAttackDuration: 3
+  Phase4Speed: 5
+  fireActivationRange: 5
   laserDuration: 0.5
-  bossPhase: 2
-  maxHealth: 200
+  bossPhase: 1
+  maxHealth: 500
   laserPrefab: {fileID: 2429907366507637052, guid: 58d097a2df8cfc146afc965da6d7a6c8, type: 3}
+  headPrefab: {fileID: 5486126084938741415, guid: 65f8f5ff677902f4991e76a88bbf4548, type: 3}
   firePoint: {fileID: 1114580844644210892}
+  fireSpawns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bigBulletPrefab: {fileID: 2332937053868600598, guid: 0d65f61fda175db4093c45e12e27e77c, type: 3}
+  corners:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!50 &553956796959475821
 Rigidbody2D:
   serializedVersion: 4

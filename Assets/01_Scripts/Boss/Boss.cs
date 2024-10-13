@@ -43,6 +43,11 @@ public class Boss : MonoBehaviour
     public GameObject bigBulletPrefab;
     GameObject bossHeadGO;
     CapsuleCollider2D collider;
+    public Transform[] corners;
+    public GameObject bossPrefab;
+    public GameObject handPrefab;
+    public GameObject BossheadPrefab;
+    public Transform[] spawnPoints;
 
     void Start()
     {
@@ -72,6 +77,7 @@ public class Boss : MonoBehaviour
                     StartCoroutine(DecideAndPerformAttack());
                     break;
                 case 2:
+                    TeleportToRandomCorner();
                     Mirror();
                     AimAtPlayer();
                     StartCoroutine(LaserAttack());
@@ -206,6 +212,14 @@ public class Boss : MonoBehaviour
         Debug.Log("El jefe está listo para otro ataque.");
     }
 
+    void TeleportToRandomCorner()
+    {
+        int randomIndex = Random.Range(0, corners.Length);
+        transform.position = corners[randomIndex].position;
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
+    }
+
 
     public void TakeDamage(float damage)
     {
@@ -245,7 +259,8 @@ public class Boss : MonoBehaviour
                 isHeadSpawned = false;
                 rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY; // Liberar restricción en Y
                 collider.enabled = true;
-                bossPhase = 1; // Pasar a la siguiente fase
+                bossPhase = 4; // Pasar a la siguiente fase
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             }
             else
             {
@@ -257,7 +272,7 @@ public class Boss : MonoBehaviour
                     isHeadSpawned = false;
                     rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
                     collider.enabled = true;
-                    bossPhase = 1;
+                    bossPhase = 4;
                 }
             }
         }
@@ -340,24 +355,25 @@ public class Boss : MonoBehaviour
     //Phase 5 ------------------------------------------------------------------------
     IEnumerator Phase5Attack()
     {
-        Debug.Log("El jefe lanza 3 balas grandes que rebotarán.");
+ 
+        // Aquí puedes detener cualquier movimiento del jefe
+        yield return new WaitForSeconds(8f);
 
-        isAttacking = true;
+        // Eliminar el prefab actual
+        Destroy(gameObject);
 
-        // Lanzar 3 balas grandes
-        for (int i = 0; i < 3; i++)
-        {
-            Instantiate(bigBulletPrefab, firePoint.position, firePoint.rotation);
-            yield return new WaitForSeconds(0.5f); // Intervalo entre disparos
-        }
+        // Instanciar las nuevas partes
+        GameObject hand1 = Instantiate(handPrefab, spawnPoints[0].position, Quaternion.identity);
+        GameObject hand2 = Instantiate(handPrefab, spawnPoints[1].position, Quaternion.identity);
+        GameObject head = Instantiate(BossheadPrefab, spawnPoints[2].position, Quaternion.identity);
 
-        // Esperar antes de que el jefe pueda atacar de nuevo
-        yield return new WaitForSeconds(attackCooldown);
+        // Asignar la vida compartida a cada parte
+        hand1.GetComponent<HeadAndHands>().SetSharedLife(currentHealth);
+        hand2.GetComponent<HeadAndHands>().SetSharedLife(currentHealth);
+        head.GetComponent<HeadAndHands>().SetSharedLife(currentHealth);
 
-        isAttacking = false;
-        canAttack = true;
+
     }
-
 
 
     // M�todo para detectar la colisi�n con las paredes
@@ -404,9 +420,11 @@ public class Boss : MonoBehaviour
         else if (currentHealth <= 300 && bossPhase == 2)
         {
             StartCoroutine(ChangePhase(3));
+            rb.isKinematic = false;
         }
         else if (currentHealth <= 200 && bossPhase == 3)
         {
+            rb.freezeRotation = true;
             StartCoroutine(ChangePhase(4));
         }
         else if (currentHealth <= 100 && bossPhase == 4)
@@ -422,12 +440,20 @@ public class Boss : MonoBehaviour
         rb.velocity = Vector2.zero; // Detén al jefe
         Debug.Log("Cambiando a la fase " + newPhase + ". Pausa de 4 segundos.");
 
-        yield return new WaitForSeconds(4f); // Pausa de 4 segundos
+        if (newPhase == 3)
+        {
+            while (!isGrounded)
+            {
+                yield return null; // Esperar hasta que el jefe esté en el suelo
+            }
+        }
 
-        // Cambia de fase
+        // Cambiar a la nueva fase
         bossPhase = newPhase;
-        canAttack = true; // Habilita los ataques nuevamente
 
-        Debug.Log("El jefe ha cambiado a la fase " + newPhase);
+        // Aquí puedes agregar cualquier lógica adicional que necesites al cambiar de fase
+        yield return new WaitForSeconds(4f); // Espera de 4 segundos
+        Debug.Log("Cambio de fase a " + newPhase + " completo.");
+        canAttack = true; // Vuelve a habilitar los ataques
     }
 }

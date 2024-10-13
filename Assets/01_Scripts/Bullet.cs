@@ -68,6 +68,31 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (collision.gameObject.CompareTag("Hand"))
+        {
+            Debug.Log("El proyectil golpeó a la Mano.");
+            HeadAndHands hand = collision.gameObject.GetComponent<HeadAndHands>();
+            if (hand != null)
+            {
+                hand.TakeDamage(damage);
+            }
+
+            // Destruir el proyectil tras impactar
+            Destroy(gameObject);
+        }
+        if (collision.gameObject.CompareTag("Head"))
+        {
+            Debug.Log("El proyectil golpeó a la Mano.");
+            HeadAndHands head = collision.gameObject.GetComponent<HeadAndHands>();
+            if (head != null)
+            {
+                head.TakeDamage(damage);
+            }
+
+            // Destruir el proyectil tras impactar
+            Destroy(gameObject);
+        }
+
         // Si el proyectil choca con cualquier otro objeto (como una pared), también se destruye
         if (collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Floor"))
         {

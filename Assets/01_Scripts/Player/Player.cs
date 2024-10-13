@@ -211,6 +211,22 @@ public class Player : MonoBehaviour
                 Debug.Log("Golpeaste a " + enemy.name);
                 enemy.GetComponent<BossHead>().TakeDamage(meleeAttackDamage);
             }
+
+            if (enemy.CompareTag("Hand"))
+            {
+                Debug.Log("Golpeaste a " + enemy.name);
+
+                // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
+                enemy.GetComponent<HeadAndHands>().TakeDamage(meleeAttackDamage);
+            }
+
+            if (enemy.CompareTag("Head"))
+            {
+                Debug.Log("Golpeaste a " + enemy.name);
+
+                // Hacer daño al enemigo (suponiendo que tenga un método TakeDamage)
+                enemy.GetComponent<HeadAndHands>().TakeDamage(meleeAttackDamage);
+            }
         }
 
         // Esperar el tiempo del cooldown antes de permitir otro ataque

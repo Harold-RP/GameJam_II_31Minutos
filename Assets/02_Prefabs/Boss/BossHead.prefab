@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 4014659785061693557}
   - component: {fileID: 7101740574032228051}
   - component: {fileID: 8793215813096464827}
+  - component: {fileID: -1988280968775436542}
   m_Layer: 0
   m_Name: BossHead
   m_TagString: BossHead
@@ -182,9 +183,9 @@ MonoBehaviour:
   life: 100
   timer: 0
   timeBtwShoot: 2
-  speed: 5
+  speed: 10
   upLimit: 7
-  TimeBtwDirection: 3
+  TimeBtwDirection: 2
   bulletPrefab: {fileID: 448776961736535390, guid: 0b9374dc3a9fc0747b9ed4e4e131f483, type: 3}
   firePoints: {fileID: 3212810065334583668}
   leftLimit: {fileID: 0}
@@ -280,6 +281,33 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &-1988280968775436542
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486126084938741415}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &6283615382415200357
 GameObject:
   m_ObjectHideFlags: 0
