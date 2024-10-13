@@ -61,6 +61,6 @@ public class TweenGame : MonoBehaviour
 
     void LoadMainMenu()
     {
-        SceneManager.LoadScene("Main Menu");
+        SceneManager.LoadScene("StartMenu");
     }
 }
