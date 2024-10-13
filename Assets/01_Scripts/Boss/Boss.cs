@@ -274,10 +274,9 @@ public class Boss : MonoBehaviour
         if (!isHeadSpawned) // Si la cabeza no ha sido generada aún
         {
             isHeadSpawned = true;
-            collider.enabled = false;
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
-            rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-            bossHeadGO = Instantiate(headPrefab, transform.position, transform.rotation);
+            collider.enabled = false; // Desactivar collider del jefe
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY; // Congelar completamente el jefe
+            bossHeadGO = Instantiate(headPrefab, new Vector3(0, 0), transform.rotation);
         }
         else // Cabeza ya generada, revisar si sigue viva
         {
@@ -285,25 +284,21 @@ public class Boss : MonoBehaviour
             {
                 isHeadSpawned = false;
                 rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY; // Liberar restricción en Y
-                collider.enabled = true;
+                rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX; // Liberar restricción en X
+                collider.enabled = true; // Reactivar collider
                 bossPhase = 4; // Pasar a la siguiente fase
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            }
-            else
-            {
-                // Aquí puedes agregar la animación de idle u otra lógica si la cabeza aún existe.
-                BossHead bossHead = bossHeadGO.GetComponent<BossHead>();
-                if (bossHead == null)
-                {
-                    // En caso de que haya problemas con el componente (aunque esto debería cubrirse con el chequeo anterior)
-                    isHeadSpawned = false;
-                    rb.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-                    rb.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
-                    collider.enabled = true;
-                    bossPhase = 4;
-                }
             }
         }
+    }
+
+    public void OnBossHeadDestroyed()
+    {
+        Destroy(bossHeadGO);
+        isHeadSpawned = false;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        collider.enabled = true; // Reactivar collider del jefe
+        bossPhase = 4; // Cambiar a la fase 4
+        Debug.Log("La cabeza del jefe ha sido destruida. Cambiando a la fase 4.");
     }
 
 
