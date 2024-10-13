@@ -35,7 +35,7 @@ public class ScreenCoverBullet : MonoBehaviour
             transform.Rotate(0, 0, rotationAmount);
         }
 
-        transform.Translate(Vector2.up * speed * Time.deltaTime, Space.Self);
+        transform.Translate(Vector2.down * speed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

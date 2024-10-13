@@ -26,6 +26,7 @@ public class BossHead : MonoBehaviour
     public Transform downLimit;
     public UnityEvent<GameObject> onShoot;
     private Boss boss;
+    private Vector3 targetPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,7 @@ public class BossHead : MonoBehaviour
             //boss = GetComponentInParent<Boss>(); // Si BossHead es un hijo del jefe
             boss = GameObject.FindWithTag("Boss").GetComponent<Boss>();
         }
+        targetPosition = rightLimit.position;
     }
 
     // Update is called once per frame
@@ -97,19 +99,28 @@ public class BossHead : MonoBehaviour
 
     void XMovement()
     {
-        if (isGoingLeft)
+        //if (isGoingLeft)
+        //{
+        //    if (leftLimit.position.x <= transform.position.x)
+        //        transform.Translate(Vector3.left * speed * Time.deltaTime);
+        //    else
+        //        isGoingLeft = false;
+        //}
+        //else//va a la derecha
+        //{
+        //    if (transform.position.x <= rightLimit.position.x)
+        //        transform.Translate(Vector3.right * speed * Time.deltaTime);
+        //    else
+        //        isGoingLeft = true;
+        //}
+
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+
+        // Cambiar de dirección al llegar al objetivo
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            if (leftLimit.position.x <= transform.position.x)
-                transform.Translate(Vector3.left * speed * Time.deltaTime);
-            else
-                isGoingLeft = false;
-        }
-        else//va a la derecha
-        {
-            if (transform.position.x <= rightLimit.position.x)
-                transform.Translate(Vector3.right * speed * Time.deltaTime);
-            else
-                isGoingLeft = true;
+            // Alternar entre los puntos A y B
+            targetPosition = targetPosition == leftLimit.position ? rightLimit.position : leftLimit.position;
         }
     }
 

@@ -33,11 +33,14 @@ public class Enemy : MonoBehaviour
 
     void Movement()
     {
-        if (player.position.x < transform.position.x)
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        else
-            transform.rotation = Quaternion.Euler(0, 0, 0);
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        if (player != null)
+        {
+            if (player.position.x < transform.position.x)
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            else
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
+        }
     }
 
     public void TakeDamage(float damage)

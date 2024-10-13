@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
@@ -55,6 +56,7 @@ public class Boss : MonoBehaviour
     public Image lifeBar;
 
     public Animator animator;
+    public Animator fadeAnim;
 
     public List<GameObject> wallpaperObjects;
 
@@ -276,7 +278,7 @@ public class Boss : MonoBehaviour
         audioSource.PlayOneShot(dam);
         if (currentHealth <= 0 && bossPhase > 5)
         {
-            Die();
+            StartCoroutine(Die());
         }
         else
         {
@@ -284,10 +286,22 @@ public class Boss : MonoBehaviour
         }
     }
 
-    void Die()
+    IEnumerator Die()
     {
         audioSource.PlayOneShot(death);
         Debug.Log("El jefe ha sido derrotado.");
+        AsyncOperation operation = SceneManager.LoadSceneAsync("Scene2");
+        operation.allowSceneActivation = false;
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                fadeAnim.SetTrigger("FadeOut");
+                yield return new WaitForSeconds(1f);
+                operation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
         GameObject.Destroy(gameObject);
     }
 

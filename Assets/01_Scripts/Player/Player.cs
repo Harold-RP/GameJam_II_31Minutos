@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //HOLA QUE TAL
 
@@ -32,6 +33,7 @@ public class Player : MonoBehaviour
     public RectTransform speedDownImg;
     public RectTransform lifeUpImg;
     public RectTransform lifeDownImg;
+    public Animator fadeAnim;
 
 
     public GameObject lifePrefab;  // Prefab de la imagen de vida (ícono)
@@ -311,15 +313,26 @@ public class Player : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
     // Método para la muerte del jugador
-    void Die()
+    IEnumerator Die()
     {
         Debug.Log("Jugador ha muerto.");
-        Destroy(gameObject);
+        AsyncOperation operation = SceneManager.LoadSceneAsync("GameOver");
+        operation.allowSceneActivation = false;
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                fadeAnim.SetTrigger("FadeOut");
+                yield return new WaitForSeconds(1f);
+                operation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
     }
 
     public void UsePowerUp(PowerUp powerUp)
