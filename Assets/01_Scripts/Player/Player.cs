@@ -39,12 +39,26 @@ public class Player : MonoBehaviour
 
     private List<GameObject> lifeIcons = new List<GameObject>();
 
+
+
+    public AudioSource audioSource;   // Referencia al AudioSource
+    public AudioClip shootSound;
+    public AudioClip knifeSound;
+    public AudioClip jump;
+    public AudioClip fall;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;  // Inicializar la vida actual
         rb.gravityScale = 2.5f;     // Escala de gravedad normal
         UpdateLivesUI();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();  // Obtiene el AudioSource del objeto si no está asignado
+        }
+
     }
 
     public void LoseLife()
@@ -104,6 +118,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.S))
         {
+            audioSource.PlayOneShot(fall);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y - 5f);  // Ajusta el valor para la rapidez de caída
 
             animator.SetTrigger("fall");
@@ -145,6 +160,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)  // Cambié a KeyCode.W
         {
+            audioSource.PlayOneShot(jump);
             isJumping = true;
             jumpTimeCounter = jumpTimeMax;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -180,6 +196,7 @@ public class Player : MonoBehaviour
     {
         if (canAttack && Input.GetKeyDown(KeyCode.K))
         {
+            audioSource.PlayOneShot(knifeSound);
             StartCoroutine(PerformMeleeAttack());
         }
     }
@@ -243,8 +260,12 @@ public class Player : MonoBehaviour
 
     void HandleRangedAttack()
     {
+
+        
+
         if (Input.GetKeyDown(KeyCode.L)) // Suponiendo que la tecla L es para disparar
         {
+            audioSource.PlayOneShot(shootSound);
             // Activar la animación de ataque usando un Trigger
             animator.SetTrigger("attack1"); // Cambia "attack" por el nombre de tu Trigger en el Animator
 
@@ -298,7 +319,7 @@ public class Player : MonoBehaviour
     void Die()
     {
         Debug.Log("Jugador ha muerto.");
-        // Aquí podrías implementar la lógica de muerte (reiniciar el nivel, mostrar pantalla de derrota, etc.)
+        Destroy(gameObject);
     }
 
     public void UsePowerUp(PowerUp powerUp)

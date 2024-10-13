@@ -25,7 +25,7 @@ public class HeadAndHands : MonoBehaviour
     public float increasedMoveSpeed = 8f;
 
     private Transform player;
-
+    private Boss bossController;
     public void SetSharedLife(float life)
     {
         sharedLife = life;
@@ -66,6 +66,10 @@ public class HeadAndHands : MonoBehaviour
 
     }
 
+    public void SetBossController(Boss controller)
+    {
+        bossController = controller;
+    }
 
     IEnumerator MoveUpDown()
     {
@@ -134,6 +138,7 @@ public class HeadAndHands : MonoBehaviour
             {
 
                 sharedLife -= damage;
+               
 
                 // Verificar si la cabeza es destruida
                 if (sharedLife <= 0)
@@ -146,11 +151,14 @@ public class HeadAndHands : MonoBehaviour
                 Debug.Log("No se puede dañar la cabeza hasta que todas las manos sean destruidas.");
             }
         }
-        else if (this.CompareTag("Hand"))
+         else if (this.CompareTag("Hand"))
         {
             sharedLife -= damage; // Aplicar daño a las manos
+           // bossController.UpdateSharedLife(-damage);
         }
 
     }
+
+   
 
 }

@@ -108,11 +108,12 @@ MonoBehaviour:
   minChargeDistance: 5
   maxJumpDistance: 8
   meleeRange: 2
-  meleeDamage: 20
+  meleeDamage: 1
   slowSpeed: 2
   fireAttackDuration: 3
   Phase4Speed: 5
   fireActivationRange: 5
+  contactDamage: 1
   laserDuration: 0.5
   bossPhase: 1
   maxHealth: 500

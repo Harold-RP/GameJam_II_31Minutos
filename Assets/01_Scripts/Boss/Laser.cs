@@ -21,11 +21,12 @@ public class Laser : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        Player playerHealth = collision.gameObject.GetComponent<Player>();
+        if (playerHealth != null)
         {
-            //daño al player
-            Destroy(gameObject);
+            playerHealth.TakeDamage(damage);
         }
+        // Destruir la bala tras impactar
         Destroy(gameObject);
     }
 }

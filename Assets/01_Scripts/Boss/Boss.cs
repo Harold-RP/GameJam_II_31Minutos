@@ -26,7 +26,7 @@ public class Boss : MonoBehaviour
     private float lastFireAttackTime = 0f;    // Última vez que se realizó el ataque de fuego
     public float Phase4Speed = 5f;
     public float fireActivationRange = 5f;
-
+    public float contactDamage = 1f;
 
     public float laserDuration = 0.5f;
     public int bossPhase = 1;
@@ -446,6 +446,18 @@ public class Boss : MonoBehaviour
             isGrounded = true;
             Debug.Log("El jefe est� tocando el suelo.");
         }
+
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            // Intentar obtener el script de vida o daño del jugador
+            Player playerHealth = collision.gameObject.GetComponent<Player>();
+
+            if (playerHealth != null)
+            {
+                // Aplicar daño al jugador
+                playerHealth.TakeDamage(contactDamage);
+            }
+        }
     }
 
     // Detectar cuando deja de estar en el suelo
@@ -530,5 +542,10 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(4f); // Espera de 4 segundos
         Debug.Log("Cambio de fase a " + newPhase + " completo.");
         canAttack = true; // Vuelve a habilitar los ataques
+    }
+    public void UpdateSharedLife(float damage)
+    {
+        currentHealth += damage; // Actualizar la vida total
+        UpdateLifeBar(); // Actualizar la barra de vida
     }
 }
