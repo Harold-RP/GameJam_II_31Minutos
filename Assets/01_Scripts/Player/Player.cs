@@ -330,11 +330,15 @@ public class Player : MonoBehaviour
                 if (Random.Range(0, 2) == 0)
                 {
                     currentHealth -= powerUp.value;
+                    LoseLife();
+                    UpdateLivesUI();
                     StartCoroutine(showPowerUpImg(lifeDownImg));
                 }
                 else
                 {
                     currentHealth += powerUp.value;
+                    GainLife();
+                    UpdateLivesUI();
                     StartCoroutine(showPowerUpImg(lifeUpImg));
                 }
                 break;
