@@ -1307,6 +1307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1885614257}
+  - component: {fileID: 1885614259}
   - component: {fileID: 1885614256}
   - component: {fileID: 1885614255}
   - component: {fileID: 1885614254}
@@ -1424,6 +1425,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1885614259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885614253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b990e5337d778448a33bc09c3789bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicClip: {fileID: 8300000, guid: 0e33dd3925cea8d4d9d05e7583951ede, type: 3}
+  delayBeforePlaying: 1
+  button1: {fileID: 1219808002}
+  button2: {fileID: 1331243386}
+  button3: {fileID: 1251468602}
 --- !u!1 &2005949281
 GameObject:
   m_ObjectHideFlags: 0
