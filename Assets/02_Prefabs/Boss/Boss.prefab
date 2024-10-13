@@ -142,6 +142,8 @@ MonoBehaviour:
   lifeText: {fileID: 0}
   lifeBar: {fileID: 0}
   animator: {fileID: 7214339172570962994}
+  wallpaperObjects:
+  - {fileID: 0}
 --- !u!50 &553956796959475821
 Rigidbody2D:
   serializedVersion: 4

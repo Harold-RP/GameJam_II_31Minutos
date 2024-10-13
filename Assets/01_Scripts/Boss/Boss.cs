@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,6 +56,8 @@ public class Boss : MonoBehaviour
 
     public Animator animator;
 
+    public List<GameObject> wallpaperObjects;
+
     void Start()
     {
 
@@ -63,6 +66,7 @@ public class Boss : MonoBehaviour
         collider = GetComponent<CapsuleCollider2D>();
         UpdateLifeBar();
 
+        UpdateWallpaper();
 
         // Detectar al jugador usando su tag
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -84,7 +88,6 @@ public class Boss : MonoBehaviour
                     StartCoroutine(DecideAndPerformAttack());
                     break;
                 case 2:
-
                     animator.SetInteger("phase", 2);
                     TeleportToRandomCorner();
                     Mirror();
@@ -112,10 +115,28 @@ public class Boss : MonoBehaviour
                     Mirror();
                     AimAtPlayer();
                     StartCoroutine(Phase5Attack());
-
                     break;
             }
 
+            // Actualiza el wallpaper en función de la fase actual del jefe
+            UpdateWallpaper();
+        }
+    }
+
+    void UpdateWallpaper()
+    {
+        // Asegurarse de que haya suficientes objetos en la lista
+        if (bossPhase >= 1 && bossPhase <= wallpaperObjects.Count)
+        {
+            // Desactivar todos los wallpapers
+            foreach (GameObject wallpaper in wallpaperObjects)
+            {
+                wallpaper.SetActive(false);
+            }
+
+            // Activar solo el wallpaper correspondiente a la fase actual
+            wallpaperObjects[bossPhase - 1].SetActive(true);
+            Debug.Log("Cambiado a wallpaper del objeto de la fase " + bossPhase);
         }
     }
 
