@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 933}
+  m_AnchoredPosition: {x: 0, y: -1771}
   m_SizeDelta: {x: 1920, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6470602
@@ -291,7 +291,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500, y: -203}
+  m_AnchoredPosition: {x: -500, y: -666}
   m_SizeDelta: {x: 905.0828, y: 1902.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &103433228
@@ -314,10 +314,59 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Programming\n\n\n\n\n\nLevel Design\n\t\nCharacter Design\n\nCreative
-    Direction\n\nProduction\n\n\n\n\n\nMusic and Sound:\n\nGraphics and Art:\t\n\nCharacter
-    designers\n\nTexture Artists\n\n3D Modelers\n\nTesters:\n\n\n\n\n\nSpecial Thanks\n\nTools
-    Used\t\n\t\t\nSocial Media:"
+  m_text: 'Tools Used
+
+
+
+
+
+
+    Testers:
+
+
+    3D Modelers
+
+
+
+    Texture Artists
+
+
+
+    Character
+    designers
+
+
+
+
+    Graphics and Art:
+
+
+    Music and Sound:
+
+
+
+
+
+
+    Production
+
+
+
+
+
+
+    Creative
+    Direction
+
+
+    Level Design
+
+
+
+
+
+
+    Programming'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -352,7 +401,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 4
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -428,7 +477,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1235.78}
+  m_AnchoredPosition: {x: 0, y: 1176}
   m_SizeDelta: {x: 1920, y: 163.1118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &398367536
@@ -451,10 +500,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Grupo 31 Minutos
+  m_text: 'Game Jam 2024
 
 
-    Game Jam 2024'
+    Grupo: 31 Minutos'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -688,7 +737,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 176}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 236.6586, y: 106.6586}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &435223722
@@ -1224,7 +1273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1846}
+  m_AnchoredPosition: {x: 0, y: 1627}
   m_SizeDelta: {x: 1920, y: 182.1602}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &986153272
@@ -1358,7 +1407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -117.74512}
+  m_AnchoredPosition: {x: 0, y: -4145}
   m_SizeDelta: {x: 0, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1667639043
@@ -1486,17 +1535,17 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1667639042}
-  - {fileID: 6470601}
-  - {fileID: 103433227}
-  - {fileID: 1929331305}
-  - {fileID: 398367535}
   - {fileID: 986153271}
+  - {fileID: 398367535}
+  - {fileID: 1929331305}
+  - {fileID: 103433227}
+  - {fileID: 6470601}
+  - {fileID: 1667639042}
   m_Father: {fileID: 419481426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1528}
+  m_AnchoredPosition: {x: 0, y: 2403}
   m_SizeDelta: {x: 1920, y: 3723.065}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1929331304
@@ -1533,7 +1582,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: -202.99036}
+  m_AnchoredPosition: {x: 500, y: -666}
   m_SizeDelta: {x: 921.9805, y: 1902.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1929331306
@@ -1556,11 +1605,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Hugo Ballivi\xE1n\nMishel Bravo\nFabiana Bilbao\nJos\xE9 Menchaca\nHarold
-    Ramirez\n\nFabiana Bilbao\n\t\nFabiana Bilbao\n\na\n\nHugo Ballivi\xE1n\nMishel
-    Bravo\nFabiana Bilbao\nJos\xE9 Menchaca\nHarold Ramirez\n\na\n\nHarold Ramirez\n\nFabiana
-    Bilbao\n\nFabiana Bilbao\n\na\n\nHugo Ballivi\xE1n\nMishel Bravo\nFabiana Bilbao\nJos\xE9
-    Menchaca\nHarold Ramirez\n\n\n\nUnity\n\n@"
+  m_text: "ChatGPT (Again)\r\nCanva\r\nPixelEditor\r\nAudacity\r\nDavinci\r\nBandicam\r\nRPG
+    Maker\r\nAesprite\r\nUnity\r\nChatGPT\r\n\r\nHugo Ballivi\xE1n\r\nMishel Bravo\r\nFabiana
+    Bilbao\r\nJos\xE9 Menchaca\r\nHarold Ramirez\r\n\r\nNobody\r\n\n\rFabiana Bilbao\nJos\xE9
+    Menchaca\r\n\nFabiana Bilbao\nJos\xE9 Menchaca\r\n\r\nMishel Bravo\r\nFabiana
+    Bilbao\r\nJos\xE9 Menchaca\r\n\r\nSomeone\r\n\r\nHugo Ballivi\xE1n\r\nMishel
+    Bravo\r\nFabiana Bilbao\r\nJos\xE9 Menchaca\r\nHarold Ramirez\r\n\r\nHugo Ballivi\xE1n\r\nMishel
+    Bravo\r\nFabiana Bilbao\r\nJos\xE9 Menchaca\r\nHarold Ramirez\r\n\r\nFabiana
+    Bilbao\r\n\r\nHugo Ballivi\xE1n\r\nMishel Bravo\r\nFabiana Bilbao\r\nJos\xE9
+    Menchaca\r\nHarold Ramirez"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1595,7 +1648,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
